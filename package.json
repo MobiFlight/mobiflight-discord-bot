@@ -6,7 +6,11 @@
   "scripts": {
     "deploy-and-start": "node ./src/deploy-commands.js && node ./src/index.js",
     "start": "node ./src/index.js",
-    "deploy-commands": "node ./src/deploy-commands.js"
+    "deploy-commands": "node ./src/deploy-commands.js",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest run --coverage"
   },
   "repository": {
     "type": "git",
@@ -29,6 +33,8 @@
     "winston-discord-transport": "^1.3.0"
   },
   "devDependencies": {
-    "eslint": "^9.0.0"
+    "@vitest/ui": "^4.0.17",
+    "eslint": "^9.0.0",
+    "vitest": "^4.0.17"
   }
 }

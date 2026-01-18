@@ -1,0 +1,19 @@
+import { defineConfig } from 'vitest/config';
+
+export default defineConfig({
+	test: {
+		globals: true,
+		environment: 'node',
+		coverage: {
+			provider: 'v8',
+			reporter: ['text', 'json', 'html'],
+			exclude: [
+				'node_modules/**',
+				'src/index.js',
+				'src/deploy-commands.js',
+				'src/logger.js',
+				'src/events/**',
+			],
+		},
+	},
+});
