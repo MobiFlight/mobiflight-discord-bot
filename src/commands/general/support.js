@@ -2,28 +2,28 @@ const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
 const { replyOrEditReply } = require('../../utilities');
 
 const mainLogger = require('../../logger');
-const logger = mainLogger.child({ service: 'mods' });
+const logger = mainLogger.child({ service: 'support' });
 
 module.exports = {
 	cooldown: 5,
 	data: new SlashCommandBuilder()
-		.setName('mods')
-		.setDescription('Moderator commands')
+		.setName('support')
+		.setDescription('Support commands')
 		.setDefaultMemberPermissions(PermissionFlagsBits.ModerateMembers)
 		.addSubcommand(subcommand =>
 			subcommand
-				.setName('details')
+				.setName('more-infos')
 				.setDescription('Prompts the user to provide more details about their problem')),
 	async execute(interaction) {
 		const subcommand = interaction.options.getSubcommand();
 
-		if (subcommand === 'details') {
-			await executeDetailsCommand(interaction);
+		if (subcommand === 'more-infos') {
+			await executeMoreInfosCommand(interaction);
 		}
 	},
 };
 
-async function executeDetailsCommand(interaction) {
+async function executeMoreInfosCommand(interaction) {
 	try {
 		const detailsMessage = `☝️ **Please tell us more specifics about your problem**
 * **MobiFlight version?** (e.g., Latest Stable / Latest Beta / 10.3.2.1)
