@@ -1,7 +1,9 @@
 [
 	{
-		"key": "more-infos",
-		"message": [
+		"label": "More Information",
+		"description": "Prompts the user to provide more details about their problem",
+		"value": "more-infos",
+		"content": [
 			"☝️ **Please tell us more specifics about your problem**",
 			"* **MobiFlight version?** (e.g., Latest Stable / Latest Beta / 10.3.2.1)",
 			"* **Sim?** (e.g., MSFS2020 / MSFS2024 / X-Plane / P3D / FSX)",
