@@ -4,10 +4,11 @@ Discord bot to assist with moderation of the Mobiflight discord
 
 ## Supported slash commands
 
-| Command       | Description                                      |
-| ------------- | ------------------------------------------------ |
-| /wiki *topic* | Shares a link to the wiki topic                  |
-| /yt *topic*   | Shares a link to the YouTube video on that topic |
+| Command            | Description                                      |
+| ------------------ | ------------------------------------------------ |
+| /wiki *topic*      | Shares a link to the wiki topic                  |
+| /yt *topic*        | Shares a link to the YouTube video on that topic |
+| /mods details      | Prompts the user to provide more details about their problem |
 
 ## Deploying
 
