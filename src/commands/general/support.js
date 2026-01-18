@@ -1,18 +1,17 @@
 const {
 	SlashCommandBuilder,
 	DiscordjsError,
-	hyperlink,
 } = require('discord.js');
 const { replyOrEditReply } = require('../../utilities');
 const { createMenuCommandHelper } = require('../../menuCommandUtilities');
 
 const mainLogger = require('../../logger');
-const logger = mainLogger.child({ service: 'wiki' });
+const logger = mainLogger.child({ service: 'support' });
 
 const menuHelper = createMenuCommandHelper({
-	envVarName: 'WIKI_ITEMS_PATH',
-	customId: 'wiki-selector',
-	placeholder: 'Select a wiki topic',
+	envVarName: 'SUPPORT_ITEMS_PATH',
+	customId: 'support-selector',
+	placeholder: 'Select a support topic',
 	logger,
 });
 
@@ -23,12 +22,12 @@ module.exports = {
 	},
 	cooldown: 5,
 	data: new SlashCommandBuilder()
-		.setName('wiki')
-		.setDescription('Links to wiki topics')
+		.setName('support')
+		.setDescription('Sends support prompts to help users provide more details')
 		.addStringOption((option) =>
 			option
 				.setName('topic')
-				.setDescription('The name of the wiki topic to send')
+				.setDescription('The name of the support topic to send')
 				.setRequired(false),
 		),
 	async execute(interaction) {
@@ -43,25 +42,22 @@ module.exports = {
 
 			if (selectedItem === undefined) {
 				await replyOrEditReply(interaction, {
-					content: `No wiki entry for ${topic} found`,
+					content: `No support entry for ${topic} found`,
 					ephemeral: true,
 				});
 				return;
 			}
 
-			const link = hyperlink(selectedItem.description, selectedItem.href);
-			const preamble =
-				selectedItem.preamble ??
-				'Check out the following link for more information:';
+			const message = selectedItem.content.join('\n');
 
 			await replyOrEditReply(interaction, {
-				content: 'Link sent!',
+				content: 'Support message sent!',
 				components: [],
 				ephemeral: true,
 			});
 
 			await interaction.channel.send({
-				content: `${preamble} ${link}`,
+				content: message,
 			});
 		}
 		catch (error) {
@@ -70,15 +66,15 @@ module.exports = {
 				error.code === 'InteractionCollectorError'
 			) {
 				await replyOrEditReply(interaction, {
-					content: 'No response received, canceling sending the wiki link',
+					content: 'No response received, canceling sending the support message',
 					components: [],
 					ephemeral: true,
 				});
 			}
 			else {
-				logger.error(`Unable to send wiki link: ${error}`, error);
+				logger.error(`Unable to send support message: ${error}`, error);
 				await replyOrEditReply(interaction, {
-					content: `Unable to send wiki link: ${error}`,
+					content: `Unable to send support message: ${error}`,
 					components: [],
 					ephemeral: true,
 				});

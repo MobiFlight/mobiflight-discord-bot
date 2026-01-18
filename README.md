@@ -4,10 +4,11 @@ Discord bot to assist with moderation of the Mobiflight discord
 
 ## Supported slash commands
 
-| Command       | Description                                      |
-| ------------- | ------------------------------------------------ |
-| /wiki *topic* | Shares a link to the wiki topic                  |
-| /yt *topic*   | Shares a link to the YouTube video on that topic |
+| Command          | Description                                                      |
+| ---------------- | ---------------------------------------------------------------- |
+| /wiki *topic*    | Shares a link to the wiki topic                                  |
+| /yt *topic*      | Shares a link to the YouTube video on that topic                 |
+| /support *topic* | Sends support prompts to help users provide more details         |
 
 ## Deploying
 
@@ -24,6 +25,7 @@ The following environment variables must be set for the bot to work properly:
 | ENABLE_COMMANDS        | Enables registering the slash commands. Should probably always be set to `true`.                                                                                          |
 | OLD_THREAD_AGE_IN_DAYS | Threads older than this value will not get a closing message sent by the bot when the thread is marked solved.                                                            |
 | SOLVED_TAG_NAME        | The name of the tag that indicates a thread is solved. Case insensitive.                                                                                                  |
+| SUPPORT_ITEMS_PATH     | Path to the JSON file with the `/support` command menu items.                                                                                                             |
 | WIKI_ITEMS_PATH        | Path to the JSON file with the `/wiki` command menu items.                                                                                                                |
 | YT_ITEMS_PATH          | Path to the JSON file with the `/yt` command menu items.                                                                                                                  |
 
