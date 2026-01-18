@@ -1,4 +1,5 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
+const { replyOrEditReply } = require('../../utilities');
 
 const mainLogger = require('../../logger');
 const logger = mainLogger.child({ service: 'mods' });
@@ -8,6 +9,7 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('mods')
 		.setDescription('Moderator commands')
+		.setDefaultMemberPermissions(PermissionFlagsBits.ModerateMembers)
 		.addSubcommand(subcommand =>
 			subcommand
 				.setName('details')
@@ -40,7 +42,7 @@ async function executeDetailsCommand(interaction) {
 → [Enable logging for more details](https://github.com/MobiFlight/MobiFlight-Connector/wiki/Providing-logs-from-MobiFlight)
 → [Taking screenshots in Windows](https://support.microsoft.com/en-us/windows/use-snipping-tool-to-capture-screenshots-00246869-1843-655f-f220-97299b865f6b)`;
 
-		await interaction.reply({
+		await replyOrEditReply(interaction, {
 			content: 'Details prompt sent!',
 			ephemeral: true,
 		});
@@ -51,17 +53,9 @@ async function executeDetailsCommand(interaction) {
 	}
 	catch (error) {
 		logger.error(`Unable to send details prompt: ${error}`, error);
-		if (interaction.replied || interaction.deferred) {
-			await interaction.followUp({
-				content: `Unable to send details prompt: ${error}`,
-				ephemeral: true,
-			});
-		}
-		else {
-			await interaction.reply({
-				content: `Unable to send details prompt: ${error}`,
-				ephemeral: true,
-			});
-		}
+		await replyOrEditReply(interaction, {
+			content: `Unable to send details prompt: ${error}`,
+			ephemeral: true,
+		});
 	}
 }
