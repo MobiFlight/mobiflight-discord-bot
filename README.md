@@ -8,7 +8,7 @@ Discord bot to assist with moderation of the Mobiflight discord
 | -------------------- | ------------------------------------------------ |
 | /wiki *topic*        | Shares a link to the wiki topic                  |
 | /yt *topic*          | Shares a link to the YouTube video on that topic |
-| /support *topic*     | Sends a support message template (defaults to more-infos) |
+| /support *topic*     | Sends a support message template (shows dropdown if no topic specified) |
 
 ## Deploying
 
