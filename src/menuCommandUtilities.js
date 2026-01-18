@@ -24,6 +24,10 @@ function createMenuCommandHelper(config) {
 
 	function loadMenuItems() {
 		const filePath = process.env[envVarName];
+		if (!filePath) {
+			logger.error(`Environment variable ${envVarName} is not set`);
+			return;
+		}
 		logger.debug(`Loading menu items from ${filePath}`);
 		try {
 			menuItems = JSON.parse(
@@ -53,6 +57,10 @@ function createMenuCommandHelper(config) {
 
 	function watchForMenuChanges() {
 		const filePath = process.env[envVarName];
+		if (!filePath) {
+			logger.error(`Environment variable ${envVarName} is not set, cannot watch for changes`);
+			return;
+		}
 		try {
 			chokidar
 				.watch(filePath, {
@@ -69,6 +77,9 @@ function createMenuCommandHelper(config) {
 	}
 
 	async function promptForTopic(interaction) {
+		if (!selectMenu) {
+			throw new Error('Menu not initialized. Ensure loadMenuItems() has been called successfully.');
+		}
 		const row = new ActionRowBuilder().addComponents(selectMenu);
 
 		const menu = await interaction.reply({
