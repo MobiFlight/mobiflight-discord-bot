@@ -81,13 +81,17 @@ async function executeMoreInfosCommand(interaction) {
 			return;
 		}
 
+		const message = Array.isArray(messageData.message)
+			? messageData.message.join('\n')
+			: messageData.message;
+
 		await replyOrEditReply(interaction, {
 			content: 'Details prompt sent!',
 			ephemeral: true,
 		});
 
 		await interaction.channel.send({
-			content: messageData.message,
+			content: message,
 		});
 	}
 	catch (error) {
