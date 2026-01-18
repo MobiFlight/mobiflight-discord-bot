@@ -26,12 +26,12 @@ module.exports = {
 async function executeDetailsCommand(interaction) {
 	try {
 		const detailsMessage = `☝️ **Please tell us more specifics about your problem**
-* MobiFlight version?
-* Sim?
-* Airplane?
-* Used Controller?
-* Did you create your config, or is it from somebody else?
-* Status Sim Connection? green?
+* **MobiFlight version?** (e.g., Latest Stable / Latest Beta / 10.3.2.1)
+* **Sim?** (e.g., MSFS2020 / MSFS2024 / X-Plane / P3D / FSX)
+* **Airplane?** (e.g., FBW A320nx / PMDG 737 / Fenix A320)
+* **Used Controller?** (e.g., MobiFlight Mega / WinWing PAP-3 / Arduino Nano)
+* **Did you create your config, or is it from somebody else?**
+* **Status Sim Connection? green?**
 
 🧪 **What did you try already?**
 🖼️ **Take screenshots** of your config (WIN + Shift + S) and share them here.
