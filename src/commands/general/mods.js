@@ -37,10 +37,10 @@ async function executeDetailsCommand(interaction) {
 🖼️ **Take screenshots** of your config (WIN + Shift + S) and share them here.
 
 💡 **Good to know:**
-→ [Getting started guide](https://github.com/MobiFlight/MobiFlight-Connector/wiki)
+→ [Getting started guide](https://docs.mobiflight.com/getting-started/)
 → [How to search our Discord](https://support.discord.com/hc/en-us/articles/115000468588-Using-Search)
-→ [Enable logging for more details](https://github.com/MobiFlight/MobiFlight-Connector/wiki/Providing-logs-from-MobiFlight)
-→ [Taking screenshots in Windows](https://support.microsoft.com/en-us/windows/use-snipping-tool-to-capture-screenshots-00246869-1843-655f-f220-97299b865f6b)`;
+→ [Sharing logs](https://docs.mobiflight.com/guides/sharing-logs/)
+→ [Taking screenshots](https://docs.mobiflight.com/guides/taking-screenshots/)`;
 
 		await replyOrEditReply(interaction, {
 			content: 'Details prompt sent!',
