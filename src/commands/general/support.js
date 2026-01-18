@@ -95,8 +95,7 @@ module.exports = {
 		),
 	async execute(interaction) {
 		try {
-			let topic;
-			topic = interaction.options.getString('topic') ?? null;
+			let topic = interaction.options.getString('topic') ?? null;
 
 			if (topic === null) {
 				topic = await promptForTopic(interaction);
