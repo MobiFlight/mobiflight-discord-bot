@@ -34,10 +34,18 @@ function createJsonCommand(config) {
 	let menuItems;
 
 	function loadMenuItems() {
-		logger.debug(`Loading menu items from ${process.env[envVarPath]}`);
+		const filePath = process.env[envVarPath];
+		
+		if (!filePath) {
+			logger.error(`Environment variable ${envVarPath} is not set`);
+			menuItems = [];
+			return;
+		}
+
+		logger.debug(`Loading menu items from ${filePath}`);
 		try {
 			menuItems = JSON.parse(
-				fs.readFileSync(process.env[envVarPath], 'utf8'),
+				fs.readFileSync(filePath, 'utf8'),
 			);
 
 			selectMenu = new StringSelectMenuBuilder()
@@ -55,9 +63,11 @@ function createJsonCommand(config) {
 		}
 		catch (err) {
 			logger.error(
-				`Failed to load menu items from ${process.env[envVarPath]}: ${err.message}`,
+				`Failed to load menu items from ${filePath}: ${err.message}`,
 				err,
 			);
+			// Initialize as empty array to prevent undefined errors
+			menuItems = [];
 		}
 	}
 
@@ -78,6 +88,11 @@ function createJsonCommand(config) {
 	}
 
 	async function promptForTopic(interaction) {
+		// Check if menu is properly initialized
+		if (!selectMenu || !menuItems || menuItems.length === 0) {
+			throw new Error('Menu not properly initialized. Please contact an administrator.');
+		}
+
 		const row = new ActionRowBuilder().addComponents(selectMenu);
 
 		const menu = await interaction.reply({
@@ -123,6 +138,15 @@ function createJsonCommand(config) {
 
 				if (topic === null) {
 					topic = await promptForTopic(interaction);
+				}
+
+				// Check if menuItems is properly loaded
+				if (!menuItems || menuItems.length === 0) {
+					await replyOrEditReply(interaction, {
+						content: `${commandName} command is not properly configured. Please contact an administrator.`,
+						ephemeral: true,
+					});
+					return;
 				}
 
 				const selectedItem = menuItems.find((item) => item.value === topic);

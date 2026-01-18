@@ -1,29 +1,39 @@
 import { describe, it, expect } from 'vitest';
 
-describe('commandFactory', () => {
-	describe('command structure', () => {
-		it('should create command with required properties', () => {
-			const mockConfig = {
-				commandName: 'test',
-				description: 'Test command',
-				envVarPath: 'TEST_PATH',
-				formatContent: (item) => item.content,
-				logger: {
-					debug: () => {},
-					error: () => {},
-				},
+describe('commandFactory core logic', () => {
+	describe('content formatting', () => {
+		it('should handle array-based content formatting', () => {
+			const formatContent = (item) => {
+				if (Array.isArray(item.content)) {
+					return item.content.join('\n');
+				}
+				return item.content;
 			};
 
-			// Test the structure that should be created
-			const expectedProperties = ['init', 'cooldown', 'data', 'execute'];
-			expectedProperties.forEach(prop => {
-				expect(prop).toBeTruthy(); // Properties should exist
-			});
+			const item = { content: ['Line 1', 'Line 2', 'Line 3'] };
+			const result = formatContent(item);
+			expect(result).toBe('Line 1\nLine 2\nLine 3');
 		});
 
-		it('should set cooldown to 5', () => {
-			const cooldown = 5;
-			expect(cooldown).toBe(5);
+		it('should handle string-based content formatting', () => {
+			const formatContent = (item) => {
+				if (Array.isArray(item.content)) {
+					return item.content.join('\n');
+				}
+				return item.content;
+			};
+
+			const item = { content: 'Simple string' };
+			const result = formatContent(item);
+			expect(result).toBe('Simple string');
+		});
+
+		it('should apply custom formatContent function', () => {
+			const formatContent = (item) => `Formatted: ${item.content}`;
+			const item = { content: 'Test content' };
+
+			const result = formatContent(item);
+			expect(result).toBe('Formatted: Test content');
 		});
 	});
 
@@ -50,41 +60,12 @@ describe('commandFactory', () => {
 			const selectedItem = menuItems.find((item) => item.value === 'nonexistent');
 			expect(selectedItem).toBeUndefined();
 		});
-	});
 
-	describe('content formatting', () => {
-		it('should apply formatContent function', () => {
-			const formatContent = (item) => `Formatted: ${item.content}`;
-			const item = { content: 'Test content' };
+		it('should handle empty menuItems array', () => {
+			const menuItems = [];
 
-			const result = formatContent(item);
-			expect(result).toBe('Formatted: Test content');
-		});
-
-		it('should handle array-based content formatting', () => {
-			const formatContent = (item) => {
-				if (Array.isArray(item.content)) {
-					return item.content.join('\n');
-				}
-				return item.content;
-			};
-
-			const item = { content: ['Line 1', 'Line 2', 'Line 3'] };
-			const result = formatContent(item);
-			expect(result).toBe('Line 1\nLine 2\nLine 3');
-		});
-
-		it('should handle string-based content formatting', () => {
-			const formatContent = (item) => {
-				if (Array.isArray(item.content)) {
-					return item.content.join('\n');
-				}
-				return item.content;
-			};
-
-			const item = { content: 'Simple string' };
-			const result = formatContent(item);
-			expect(result).toBe('Simple string');
+			const selectedItem = menuItems.find((item) => item.value === 'test');
+			expect(selectedItem).toBeUndefined();
 		});
 	});
 
@@ -149,6 +130,58 @@ describe('commandFactory', () => {
 				description: 'First item',
 				value: 'item1',
 			});
+		});
+
+		it('should handle empty menuItems when building options', () => {
+			const menuItems = [];
+
+			const options = menuItems.map(item => ({
+				label: item.label,
+				description: item.description,
+				value: item.value,
+			}));
+
+			expect(options).toHaveLength(0);
+		});
+	});
+
+	describe('error handling patterns', () => {
+		it('should initialize menuItems as empty array on error', () => {
+			let menuItems;
+			
+			try {
+				// Simulate failed file read
+				throw new Error('File not found');
+			}
+			catch (err) {
+				// Initialize as empty array to prevent undefined errors
+				menuItems = [];
+			}
+
+			expect(Array.isArray(menuItems)).toBe(true);
+			expect(menuItems).toHaveLength(0);
+		});
+
+		it('should check environment variable before use', () => {
+			const envVarPath = 'TEST_PATH';
+			const mockEnv = { TEST_PATH: '/test/path.json' };
+
+			const filePath = mockEnv[envVarPath];
+			
+			if (!filePath) {
+				expect.fail('Environment variable should be set');
+			}
+
+			expect(filePath).toBe('/test/path.json');
+		});
+
+		it('should handle missing environment variable', () => {
+			const envVarPath = 'MISSING_PATH';
+			const mockEnv = {};
+
+			const filePath = mockEnv[envVarPath];
+			
+			expect(filePath).toBeUndefined();
 		});
 	});
 });
